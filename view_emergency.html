@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Alert History | Crime Analytics{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 0 auto; text-align: left;">
+    <h2 class="page-title">Emergency Alert History 🚨</h2>
+    <p class="page-subtitle">Tracked SOS signals with precise location data.</p>
+    
+    <div class="glass-panel" style="padding: 20px; overflow-x: auto; border-color: rgba(255, 0, 0, 0.3);">
+        {% if alerts %}
+            <table class="feedback-table" style="width: 100%; border-collapse: collapse; color: #eee; min-width: 700px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid rgba(255, 0, 0, 0.2); text-align: left;">
+                        <th style="padding: 12px; color: #ff4d4d;"><i class="fas fa-clock"></i> Timestamp</th>
+                        <th style="padding: 12px; color: #ff4d4d;"><i class="fas fa-user"></i> Triggered By</th>
+                        <th style="padding: 12px; color: #ff4d4d;"><i class="fas fa-map-marker-alt"></i> Location (Lat, Lon)</th>
+                        <th style="padding: 12px; color: #ff4d4d;"><i class="fas fa-comment-alt"></i> Message</th>
+                        <th style="padding: 12px; color: #ff4d4d;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for alert in alerts %}
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255, 0, 0, 0.02);">
+                        <td style="padding: 12px; font-size: 0.85rem;">{{ alert[5] }}</td>
+                        <td style="padding: 12px; font-weight: bold; color: var(--primary);">{{ alert[1] }}</td>
+                        <td style="padding: 12px;">
+                            <a href="https://www.google.com/maps?q={{ alert[2] }},{{ alert[3] }}" target="_blank" style="color: #00f0ff; text-decoration: none;">
+                                {{ "%.4f"|format(alert[2]) }}, {{ "%.4f"|format(alert[3]) }}
+                                <i class="fas fa-external-link-alt" style="font-size: 0.7rem; margin-left: 5px;"></i>
+                            </a>
+                        </td>
+                        <td style="padding: 12px; font-size: 0.9rem;">{{ alert[4] }}</td>
+                        <td style="padding: 12px;">
+                            <button onclick="window.open('https://www.google.com/maps?q={{ alert[2] }},{{ alert[3] }}', '_blank')" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; background: linear-gradient(45deg, #ff4d4d, #b30000);">
+                                <i class="fas fa-map-marked-alt"></i> View Map
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div style="text-align: center; color: #bbb; padding: 40px 0;">
+                <i class="fas fa-shield-alt" style="font-size: 3rem; color: rgba(255,255,255,0.1); margin-bottom: 15px;"></i>
+                <p>No emergency alerts recorded yet. The system is clear.</p>
+            </div>
+        {% endif %}
+
+        <div style="text-align: center; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+            <a href="{{ url_for('emergency') }}" class="btn btn-alert" style="text-decoration: none; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d;">
+                <i class="fas fa-arrow-left"></i> Back to Emergency Page
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

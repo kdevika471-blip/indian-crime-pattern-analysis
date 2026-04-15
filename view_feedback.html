@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}View Feedback | Crime Analytics{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto; text-align: left;">
+    <h2 class="page-title">User Feedback</h2>
+    <p class="page-subtitle">What others are saying about the analytics portal</p>
+    
+    <div class="glass-panel" style="padding: 20px; overflow-x: auto;">
+        {% if feedbacks %}
+            <table class="feedback-table" style="width: 100%; border-collapse: collapse; color: #eee; min-width: 800px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                        <th style="padding: 12px;">Name</th>
+                        <th style="padding: 12px;">Email</th>
+                        <th style="padding: 12px;">Contact</th>
+                        <th style="padding: 12px;">Address</th>
+                        <th style="padding: 12px;">Rating</th>
+                        <th style="padding: 12px;">Feedback</th>
+                        <th style="padding: 12px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for fb in feedbacks %}
+                    <tr id="row-{{ fb[0] }}" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <td style="padding: 12px; font-weight: bold; color: var(--primary);">{{ fb[1] }}</td>
+                        <td style="padding: 12px;">{{ fb[2] }}</td>
+                        <td style="padding: 12px;">{{ fb[3] or '-' }}</td>
+                        <td style="padding: 12px;">{{ fb[4] or '-' }}</td>
+                        <td style="padding: 12px;">
+                            <span style="color:#ffdf00;">{{ "★" * fb[5] }}{{ "☆" * (5-fb[5]) }}</span>
+                        </td>
+                        <td style="padding: 12px; font-size: 0.9rem; max-width: 250px;">{{ fb[6] }}</td>
+                        <td style="padding: 12px;">
+                            <button onclick="deleteFeedback({{ fb[0] }})" class="btn btn-alert" style="padding: 5px 10px; font-size: 0.75rem; border-radius: 6px;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="text-align: center; color: #bbb; padding: 20px 0;">No feedback submitted yet. Be the first!</p>
+        {% endif %}
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="{{ url_for('feedback') }}" class="btn btn-primary" style="text-decoration: none;">Back to Feedback Form</a>
+        </div>
+    </div>
+
+    <script>
+        async function deleteFeedback(fbId) {
+            if(!confirm("Are you sure you want to permanently delete this feedback?")) return;
+            
+            try {
+                const response = await fetch('/delete-feedback/' + fbId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                
+                if(result.status === 'success') {
+                    const row = document.getElementById(`row-${fbId}`);
+                    if(row) {
+                        row.style.transition = 'all 0.5s ease';
+                        row.style.opacity = '0';
+                        row.style.transform = 'translateX(20px)';
+                        setTimeout(() => row.remove(), 500);
+                    }
+                    showToast("Feedback deleted successfully.", "success");
+                }
+            } catch(e) {
+                showToast("Failed to delete feedback.", "error");
+            }
+        }
+    </script>
+</div>
+{% endblock %}

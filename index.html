@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Indian Crime Pattern Analysis Portal{% endblock %}
+
+{% block body_class %}hero-bg{% endblock %}
+
+{% block content %}
+<div style="
+    min-height: 100vh;
+    width: 100%;
+    background-image: url('{{ url_for("static", filename="crime_scene_bg.png") }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    border: 30px solid #050510;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.9), 0 0 20px rgba(0, 240, 255, 0.15);
+    background-color: #050510;
+    box-sizing: border-box;
+">
+
+    <div>
+        <h1 style="
+            font-size: 4rem;
+            color: white;
+            text-shadow: 3px 3px 12px rgba(0,0,0,1);
+            margin-bottom: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        ">
+            Indian Crime Pattern Analysis Portal
+        </h1>
+
+        <p style="
+            font-size: 1.6rem;
+            color: #e0e0e0;
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 6px rgba(0,0,0,0.9);
+        ">
+            Understanding crime trends using data analytics
+        </p>
+
+        <div style="
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            flex-wrap:wrap;
+        ">
+            {% if user_id %}
+                <button onclick="window.location.href='{{ url_for("insights") }}'" class="btn btn-primary"
+                    style="
+                        background: linear-gradient(45deg, #36d1dc, #5b86e5);
+                        padding: 16px 30px;
+                        border-radius: 12px;
+                        box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+                        transition: 0.3s;
+                    ">
+                    💡 View Insights
+                </button>
+            {% else %}
+                <button onclick="window.location.href='{{ url_for("login") }}'" class="btn btn-primary"
+                    style="
+                        padding: 16px 30px;
+                        border-radius: 12px;
+                        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+                        box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+                        transition: 0.3s;
+                    ">
+                    🔒 Secure Login
+                </button>
+            {% endif %}
+
+            <button onclick="window.location.href='{{ url_for("about") }}'" class="btn"
+                style="
+                    background: rgba(255,255,255,0.15);
+                    border: 2px solid white;
+                    color: white;
+                    padding: 16px 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+                    transition: 0.3s;
+                ">
+                📖 View Crime Statistics (About)
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

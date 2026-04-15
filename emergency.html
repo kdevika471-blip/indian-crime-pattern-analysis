@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Command Center{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Emergency Command Center 🚨</h1>
+    <p class="page-subtitle">Immediate assistance and live safety monitoring.</p>
+
+    <div class="emergency-alert-container">
+        <!-- 🔹 2. Emergency Detected -->
+        <div id="emergencyDetectedSection" class="emergency-alert alert-danger" style="display: none; flex-direction: column; align-items: center; text-align: center; gap: 15px; padding: 30px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem;"></i>
+                <div class="alert-content">
+                    <h2 style="margin: 0; color: #fff;">Dangerous Situation Detected</h2>
+                    <p style="font-size: 1.1rem; margin: 5px 0;">You need help? Dangerous situation detected.</p>
+                </div>
+            </div>
+            <button onclick="shareLiveLocation()" class="btn btn-primary" style="background: var(--secondary); box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);">
+                <i class="fas fa-map-marker-alt"></i> Share Live Location Now
+            </button>
+        </div>
+
+        <!-- 🔹 3. Stay Alert + SOS Activation -->
+        <div id="stayAlertSection" class="emergency-alert alert-warning" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; padding: 30px; border-color: rgba(252, 225, 0, 0.3);">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-bullhorn" style="font-size: 2.5rem; color: var(--accent);"></i>
+                <div class="alert-content">
+                    <h2 style="margin: 0; color: #fff;">Stay Alert</h2>
+                    <p style="font-size: 1.1rem; margin: 5px 0;">Suspicious or unsafe activity detected nearby.</p>
+                </div>
+            </div>
+            <button id="sosMainBtn" onclick="sos()" class="sos-btn" style="margin: 20px 0;">SOS</button>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Click SOS to notify authorities and emergency contacts.</p>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- 🔹 11. Google Maps Integration -->
+        <div class="glass-panel" style="grid-column: span 2;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <div>
+                    <h3><i class="fas fa-map-location-dot"></i> Live Tracking & Danger Zones</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Visualizing high-risk areas and your real-time position.</p>
+                </div>
+                <!-- 🔹 4. Live Location Tracking Status -->
+                <div id="trackingStatus" class="status-indicator">
+                    <span class="dot"></span> <span id="trackingText">Tracking Inactive</span>
+                </div>
+            </div>
+            <div class="map-responsive">
+                <iframe id="incidentMap" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+        
+        <!-- Emergency Controls -->
+        <div class="glass-panel" style="border-color: rgba(255, 0, 60, 0.3);">
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-cog"></i> Safety Controls</h3>
+            
+            <div class="emergency-controls-grid">
+                <!-- 🔹 4. Live Tracking Toggle -->
+                <div class="control-card">
+                    <i class="fas fa-location-crosshairs"></i>
+                    <span style="font-size: 0.85rem; font-weight: 600;">Live Tracking</span>
+                    <label class="switch">
+                        <input type="checkbox" id="trackingToggle" onchange="toggleTracking(this)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- 🔹 7. Silent SOS Mode -->
+                <div class="control-card">
+                    <i class="fas fa-user-secret"></i>
+                    <span style="font-size: 0.85rem; font-weight: 600;">Silent SOS</span>
+                    <label class="switch">
+                        <input type="checkbox" id="silentToggle" onchange="toggleSilentMode(this)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- 🔹 8. Alarm Mode -->
+                <div class="control-card" id="alarmControlCard" style="grid-column: span 2; flex-direction: row; justify-content: space-between; padding: 15px 25px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-bell"></i>
+                        <span style="font-weight: 600;">Loud Siren Alarm</span>
+                    </div>
+                    <button onclick="triggerAlarm()" id="alarmBtn" class="btn" style="padding: 10px 20px; font-size: 0.8rem; background: linear-gradient(45deg, #f39c12, #e67e22);">
+                        ACTIVATE
+                    </button>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
+
+            <!-- 🔹 5. Emergency Calls -->
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-phone-volume"></i> Direct Emergency Calls</h3>
+            <div class="call-grid">
+                <button onclick="directCall('100')" class="call-btn btn-police" style="cursor: pointer; border: none; font-size: 0.95rem;">
+                    <i class="fas fa-shield-alt"></i> POLICE (100)
+                </button>
+                <button onclick="directCall('108')" class="call-btn btn-ambulance" style="cursor: pointer; border: none; font-size: 0.95rem;">
+                    <i class="fas fa-ambulance"></i> AMBULANCE (108)
+                </button>
+            </div>
+            <button onclick="directCall('112')" class="btn btn-alert" style="width:100%; margin-top:10px; font-size: 1rem; border-radius: 12px;">
+                <i class="fas fa-broadcast-tower"></i> UNIVERSAL (112)
+            </button>
+
+            <!-- 🔹 9 & 10. Smart Detection Status -->
+            <div style="margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.85rem;">
+                    <span><i class="fas fa-shield-virus"></i> Dangerous Zone:</span>
+                    <span id="dangerZoneStatus" style="color: var(--success); font-weight: bold;">Monitoring</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                    <span><i class="fas fa-brain"></i> Smart Detection:</span>
+                    <span id="smartDetectionStatus" style="color: var(--success); font-weight: bold;">Active</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔹 Emergency Contacts Management -->
+        <div class="glass-panel" style="border-color: rgba(0, 240, 255, 0.3);">
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-users"></i> Emergency Contacts</h3>
+            <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom: 15px;">SOS alerts will be sent to these numbers immediately.</p>
+            
+            <div id="contactList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; max-height: 200px; overflow-y: auto;">
+                <!-- Contacts will be loaded here -->
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <input type="text" id="newContactPhone" placeholder="Phone (e.g. +91...)" class="form-control" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+                <input type="email" id="newContactEmail" placeholder="Email Address" class="form-control" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+                <button onclick="addEmergencyContact()" class="btn btn-primary" style="width: 100%; padding: 10px; border-radius: 8px;">ADD CONTACT</button>
+            </div>
+            
+            <script>
+                // Local Management of Contacts with Email support
+                function loadContacts() {
+                    const list = document.getElementById('contactList');
+                    const contacts = JSON.parse(localStorage.getItem('emergencyContacts') || '[]');
+                    list.innerHTML = contacts.length ? '' : '<p style="color:var(--text-muted); font-size:0.8rem; text-align:center;">No contacts added yet.</p>';
+                    
+                    contacts.forEach((contact, index) => {
+                        const div = document.createElement('div');
+                        div.style = "display: flex; justify-content: space-between; align-items: start; background: rgba(255,255,255,0.05); padding: 10px 12px; border-radius: 8px; border-left: 3px solid var(--accent);";
+                        div.innerHTML = `
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <span style="font-family: monospace; font-size: 0.9rem; color: #fff;">${typeof contact === 'string' ? contact : contact.phone}</span>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">${typeof contact === 'string' ? 'No Email' : contact.email}</span>
+                            </div>
+                            <i class="fas fa-trash-alt" style="color: var(--secondary); cursor: pointer; margin-top: 5px;" onclick="removeContact(${index})"></i>
+                        `;
+                        list.appendChild(div);
+                    });
+                }
+
+                function addEmergencyContact() {
+                    const phoneInput = document.getElementById('newContactPhone');
+                    const emailInput = document.getElementById('newContactEmail');
+                    const phone = phoneInput.value.trim();
+                    const email = emailInput.value.trim();
+                    
+                    if (!phone || !email) {
+                        if(typeof showToast === 'function') showToast("Please enter both phone and email", "warning");
+                        return;
+                    }
+                    
+                    const contacts = JSON.parse(localStorage.getItem('emergencyContacts') || '[]');
+                    
+                    // Simple check to prevent duplicates
+                    const isDup = contacts.some(c => (typeof c === 'string' ? c === phone : c.phone === phone));
+                    
+                    if (!isDup) {
+                        contacts.push({ phone, email });
+                        localStorage.setItem('emergencyContacts', JSON.stringify(contacts));
+                        phoneInput.value = '';
+                        emailInput.value = '';
+                        loadContacts();
+                        if(typeof showToast === 'function') showToast("Contact added successfully", "success");
+                    } else {
+                        if(typeof showToast === 'function') showToast("Contact already exists", "warning");
+                    }
+                }
+
+                function removeContact(index) {
+                    const contacts = JSON.parse(localStorage.getItem('emergencyContacts') || '[]');
+                    contacts.splice(index, 1);
+                    localStorage.setItem('emergencyContacts', JSON.stringify(contacts));
+                    loadContacts();
+                }
+
+                document.addEventListener('DOMContentLoaded', loadContacts);
+            </script>
+        </div>
+
+    </div>
+</div>
+
+<!-- Audio for Siren -->
+<audio id="sirenAudio" loop>
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-emergency-siren-loop-2492.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    // Initialize component specific UI state
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("Emergency Mobile Bridge Loaded.");
+        // Automatically simulate danger zone entry after a few seconds for demo
+        setTimeout(() => {
+            const detectedSection = document.getElementById('emergencyDetectedSection');
+            if (detectedSection) {
+                detectedSection.style.display = 'flex';
+                // Trigger warning logic if not in silent mode
+                if (typeof checkDangerZone === 'function') checkDangerZone(true);
+            }
+        }, 5000);
+    });
+</script>
+{% endblock %}

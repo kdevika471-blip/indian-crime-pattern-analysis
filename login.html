@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Login | Secure Access{% endblock %}
+
+{% block body_class %}hero-bg{% endblock %}
+
+{% block head %}
+<style>
+    body.hero-bg {
+        background: radial-gradient(circle at center, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), 
+                    url('{{ url_for('static', filename='login_bg.png') }}') no-repeat center/cover;
+    }
+    .flash-messages {
+        margin-bottom: 20px;
+    }
+    .flash {
+        padding: 10px; border-radius: 5px; text-align:center;
+    }
+    .flash.error { background: rgba(255, 0, 0, 0.2); border: 1px solid red; }
+    .flash.warning { background: rgba(255, 165, 0, 0.2); border: 1px solid orange; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+    
+    <div class="glass-panel" style="width: 100%; max-width: 400px; text-align: center;" id="authPanel">
+        <h2 style="margin-bottom: 5px;" id="formTitle">Secure Login</h2>
+        <p style="margin-bottom: 25px; color: #ccc;" id="formDesc">Access Dashboard Insights</p>
+
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <input type="hidden" id="actionField" name="action" value="login">
+            
+            <div class="form-group" id="emailGroup" style="display: none;">
+                <input type="email" name="email" id="emailInput" class="form-control" placeholder="Email Address">
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <div style="text-align: right; margin-top: 8px;">
+                    <a href="#" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;" onclick="showToast('Please contact system administrator to reset your password.', 'info')">Forgot Password?</a>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Login 🔒</button>
+        </form>
+
+        <div style="margin-top: 20px; font-size: 0.9rem;">
+            <span id="toggleText">Don't have an account?</span> 
+            <a href="#" onclick="toggleMode(event)" id="toggleLink" style="color: var(--primary); text-decoration: none; font-weight:bold;">Create Account</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let mode = 'login';
+    function toggleMode(e) {
+        e.preventDefault();
+        mode = mode === 'login' ? 'register' : 'login';
+        
+        document.getElementById('actionField').value = mode;
+        const emailGroup = document.getElementById('emailGroup');
+        const emailInput = document.getElementById('emailInput');
+
+        if(mode === 'register') {
+            document.getElementById('formTitle').innerText = 'Create Account';
+            document.getElementById('formDesc').innerText = 'Join the analytics network';
+            document.getElementById('submitBtn').innerHTML = 'Sign Up ✍️';
+            document.getElementById('toggleText').innerText = 'Already have an account?';
+            document.getElementById('toggleLink').innerText = 'Login Now';
+            emailGroup.style.display = 'block';
+            emailInput.setAttribute('required', 'required');
+        } else {
+            document.getElementById('formTitle').innerText = 'Secure Login';
+            document.getElementById('formDesc').innerText = 'Access Dashboard Insights';
+            document.getElementById('submitBtn').innerHTML = 'Login 🔒';
+            document.getElementById('toggleText').innerText = 'Don\'t have an account?';
+            document.getElementById('toggleLink').innerText = 'Create Account';
+            emailGroup.style.display = 'none';
+            emailInput.removeAttribute('required');
+        }
+    }
+</script>
+{% endblock %}

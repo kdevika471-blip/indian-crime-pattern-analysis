@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Crime Insights | Key Findings{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="page-title">Crime Insights 💡</h2>
+    <p class="page-subtitle">Key Findings & Actionable Recommendations</p>
+
+    <div class="dashboard-grid">
+        
+        <div class="glass-panel">
+            <h3>📊 Extracted Findings</h3>
+            <ul style="padding-left: 20px; line-height: 1.8; margin-top:15px;">
+                <li><strong>Highest Crime Rate:</strong> Delhi and UP show the highest absolute numbers in 2024.</li>
+                <li><strong>Common Category:</strong> 'Theft' constitutes 40% of all reported crimes.</li>
+                <li><strong>Emerging Threat:</strong> 'Cybercrime' has surged by 25% year-over-year.</li>
+                <li><strong>Regional Shift:</strong> Southern regions denote improved safety indexes, primarily driven by better awareness.</li>
+            </ul>
+        </div>
+        
+        <div class="glass-panel">
+            <h3>🛠 Actionable Insights (Recommendations)</h3>
+            <ul class="insight-list" style="margin-top:10px;">
+                <li>Increase police patrol in high-crime metro areas (🔴 Red zones).</li>
+                <li>Install CCTV surveillance systems at critical junctions.</li>
+                <li>Conduct large-scale awareness campaigns regarding Cyber Fraud.</li>
+                <li>Strengthen cyber security monitoring and rapid response teams.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

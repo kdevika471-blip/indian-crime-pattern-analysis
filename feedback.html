@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Feedback & Review{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px;">
+    <h2 class="page-title">User Feedback 📝</h2>
+    <p class="page-subtitle">Help us improve the analytics portal</p>
+
+    <div class="glass-panel">
+        <form id="feedbackForm" onsubmit="submitFeedback(event)">
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fbName" class="form-control" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email ID</label>
+                <input type="email" id="fbEmail" class="form-control" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group" style="display: flex; gap: 10px;">
+                <div style="flex: 1;">
+                    <label>Contact Number</label>
+                    <input type="tel" id="fbContact" class="form-control" placeholder="Phone/Mobile" required>
+                </div>
+                <div style="flex: 2;">
+                    <label>Address</label>
+                    <input type="text" id="fbAddress" class="form-control" placeholder="City/State" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>User Experience Rating</label>
+                <div class="star-rating" style="display: flex; gap: 10px; font-size: 1.5rem; color: #ffdf00; cursor: pointer; margin-top: 5px;">
+                    <i class="far fa-star star" data-value="1"></i>
+                    <i class="far fa-star star" data-value="2"></i>
+                    <i class="far fa-star star" data-value="3"></i>
+                    <i class="far fa-star star" data-value="4"></i>
+                    <i class="far fa-star star" data-value="5"></i>
+                </div>
+                <input type="hidden" id="fbRating" value="0" required>
+            </div>
+
+            <div class="form-group">
+                <label>Feedback</label>
+                <textarea id="fbInsights" class="form-control" rows="4" placeholder="Your experience/suggestions..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Feedback</button>
+            <div id="fbMessage" style="margin-top: 15px; text-align:center; font-weight:bold;"></div>
+            
+            <div style="margin-top: 25px; text-align: center; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
+                <p style="margin-bottom: 10px; font-size: 0.9rem;">Want to see what others are saying?</p>
+                <a href="{{ url_for('view_feedback') }}" class="btn" style="border: 1px solid #36d1dc; color: #36d1dc; width: 100%; text-decoration:none;">View Submitted Feedback</a>
+            </div>
+        </form>
+        
+        <script>
+            // Star rating interaction
+            document.querySelectorAll('.star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    document.getElementById('fbRating').value = value;
+                    updateStars(value);
+                });
+                star.addEventListener('mouseover', function() {
+                    const value = this.getAttribute('data-value');
+                    updateStars(value);
+                });
+            });
+            
+            document.querySelector('.star-rating').addEventListener('mouseleave', function() {
+                const currentRating = document.getElementById('fbRating').value;
+                updateStars(currentRating);
+            });
+            
+            function updateStars(value) {
+                document.querySelectorAll('.star').forEach(star => {
+                    const starValue = star.getAttribute('data-value');
+                    if (starValue <= value) {
+                        star.classList.replace('far', 'fas');
+                    } else {
+                        star.classList.replace('fas', 'far');
+                    }
+                });
+            }
+        </script>
+    </div>
+</div>
+{% endblock %}

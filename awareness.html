@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Awareness & Safety Alerts{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="page-title">Crime Awareness 🚨</h2>
+    <p class="page-subtitle">Stay educated and vigilant</p>
+
+    <div class="dashboard-grid">
+        
+        <div class="glass-panel" style="border-left: 5px solid #ff416c;">
+            <h3>Crime Alerts by Region</h3>
+            <ul style="margin-top:20px; color:var(--text-muted); line-height:1.9;">
+                <li>🔴 <strong>Delhi Region:</strong> Increased reports of chain-snatching in crowded markets. Be alert.</li>
+                <li>🔴 <strong>Mumbai:</strong> High incidences of ATM frauds recently reported.</li>
+                <li>🟡 <strong>Bangalore:</strong> Cyber awareness programs being conducted due to tech-fraud risks.</li>
+            </ul>
+        </div>
+        
+        <div class="glass-panel" style="border-left: 5px solid #36d1dc;">
+            <h3>Increasing Crime Warnings</h3>
+            <p style="margin-top:10px; line-height:1.7;">
+                The biggest increasing threat across all major states is <strong>Digital Fraud</strong>. Phishing attacks, false lottery schemes, and OTP scams are at an all-time high. Never share your OTP with anyone.
+            </p>
+        </div>
+
+        <div class="glass-panel" style="grid-column: span 2; border-left: 5px solid #4caf50;">
+            <h3>Safety Awareness Messages</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:15px;">
+                <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:10px;">
+                    <h4>Women's Safety</h4>
+                    <p style="font-size:0.9rem; color:#bbb;">Use our portal's SOS feature when traveling alone at night. Always share your live location with family.</p>
+                </div>
+                <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:10px;">
+                    <h4>Cyber Security</h4>
+                    <p style="font-size:0.9rem; color:#bbb;">Install reputable anti-virus software on your phones. Do not download unexpected APKs related to loans or courier services.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

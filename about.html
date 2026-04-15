@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}About | Crime Data Explained{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <h2 class="page-title">About the Project 📖</h2>
+    <p class="page-subtitle">Explaining the mission and datasets behind Indian Crime Pattern Analysis</p>
+
+    <div class="glass-panel" style="margin-bottom: 20px;">
+        <h3>Project Overview</h3>
+        <p style="color:var(--text-muted); line-height:1.6; margin-top:10px;">
+            The objective of this portal is to equip citizens and law enforcement agencies with a transparent, analytics-driven dashboard. By tracking reported crimes across states, we aim to visualize metrics and reveal emerging threats rapidly.
+        </p>
+    </div>
+
+    <div class="glass-panel" style="margin-bottom: 20px;">
+        <h3>Dataset Description</h3>
+        <p style="color:var(--text-muted); line-height:1.6; margin-top:10px;">
+            The underlying data encompasses incident types (theft, assault, cybercrime, etc.), timestamps, involved demographics, and geolocation. The numbers shown here are derived from a combination of public safety records and synthesized test data to demonstrate the system's capabilities.
+        </p>
+    </div>
+
+    <div class="glass-panel">
+        <h3>Importance of Crime Analytics</h3>
+        <p style="color:var(--text-muted); line-height:1.6; margin-top:10px;">
+            Predictive modeling and immediate data visualization reduce response times. Through continuous monitoring, authorities can preemptively allocate resources to high-risk zones, ultimately creating a safer society.
+        </p>
+    </div>
+</div>
+{% endblock %}

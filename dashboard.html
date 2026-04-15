@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Crime Analytics{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="alert-ticker">
+        <p id="alertText">Loading Real-Time Alerts...</p>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="glass-panel" style="margin-bottom: 20px; display:flex; gap:15px; flex-wrap:wrap;">
+        <h4 style="align-self:center;">Filters: </h4>
+        <select id="filterState" class="form-control" style="width:150px;" onchange="applyDashboardFilters()">
+            <option>All States</option>
+            <option>Delhi</option>
+            <option>Karnataka</option>
+            <option>Odisha</option>
+            <option>Haryana</option>
+            <option>Rajasthan</option>
+            <option>Uttar Pradesh</option>
+            <option>Maharashtra</option>
+            <option>Gujarat</option>
+            <option>Tamil Nadu</option>
+            <option>Kerala</option>
+            <option>Telangana</option>
+            <option>Bihar</option>
+            <option>Punjab</option>
+            <option>Andhra Pradesh</option>
+            <option>West Bengal</option>
+        </select>
+        <select id="filterType" class="form-control" style="width:150px;" onchange="applyDashboardFilters()">
+            <option>All Crime Types</option>
+            <option>Kidnapping</option>
+            <option>Domestic Violence</option>
+            <option>Theft</option>
+            <option>Burglary</option>
+            <option>Murder</option>
+            <option>Assault</option>
+            <option>Drug Offense</option>
+            <option>Fraud</option>
+            <option>Cyber Crime</option>
+            <option>Robbery</option>
+        </select>
+        <select id="filterYear" class="form-control" style="width:150px;" onchange="applyDashboardFilters()">
+            <option>All Years</option>
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+            <option>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+        </select>
+        <button class="btn btn-primary" onclick="applyDashboardFilters()">Apply</button>
+
+    </div>
+
+    <!-- Summary Cards Section -->
+    <div class="summary-card-container">
+        <div class="summary-card total-cases">
+            <i class="fas fa-building"></i>
+            <div class="card-content">
+                <span class="card-label">Total Cases:</span>
+                <span id="totalCasesVal" class="card-value">0</span>
+            </div>
+        </div>
+        <div class="summary-card crime-rate">
+            <i class="fas fa-briefcase"></i>
+            <div class="card-content">
+                <span class="card-label">Crime Rate:</span>
+                <span id="crimeRateVal" class="card-value">0</span>
+                <span class="card-unit">per 100,000</span>
+            </div>
+        </div>
+        <div class="summary-card pending-cases">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="card-content">
+                <span class="card-label">Pending Cases:</span>
+                <span id="pendingCasesVal" class="card-value">0</span>
+            </div>
+        </div>
+        <div class="summary-card affected-group">
+            <i class="fas fa-female"></i>
+            <div class="card-content">
+                <span class="card-label">Most Affected Group:</span>
+                <span id="affectedGroupVal" class="card-value">-</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Visualization: Cases by State -->
+        <div class="glass-panel">
+            <h3>Cases by State (Bar Chart)</h3>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Visualization: Crime Types -->
+        <div class="glass-panel">
+            <h3>Crime Type Distribution (Pie)</h3>
+            <div class="chart-container">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Visualization: Crime Trends -->
+        <div class="glass-panel" style="grid-column: span 2;">
+            <h3>Crime Trends Over Years (Line)</h3>
+            <div class="chart-container">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Visualization: Population vs Crime -->
+        <div class="glass-panel" style="grid-column: span 2;">
+            <h3>Population vs Crime Density (Scatter)</h3>
+            <div class="chart-container">
+                <canvas id="scatterChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Visualization: Monthly Trends -->
+        <div class="glass-panel" style="grid-column: span 2;">
+            <h3>Monthly Trends (Heatmap Proxy)</h3>
+            <div class="chart-container">
+                <canvas id="monthlyTrendChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
